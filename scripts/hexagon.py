@@ -1,3 +1,8 @@
+'''
+@ Author: Yinghao Gao
+
+This script demonstrate the computation of a four-layer deployable origami array that can deploy on a spherical surface.
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -23,7 +28,7 @@ step = 0.01         # search step
 
 # -----------------------------------------------------------------
 
-# -------------------- functions ------------------------------
+# -------------------- projection function ------------------------------
 def computeZ(p:np.array)->np.array:
     '''
     brief
@@ -169,7 +174,7 @@ class Visual:
         origin = (p001 + p004)/2
 
         color = ptColor.rgb2hex(np.random.rand(3))
-        
+
         hexagon1 = Poly3DCollection([p001, p002, origin], facecolor=color)
         hexagon2 = Poly3DCollection([p002, p003, origin], facecolor=color)
         hexagon3 = Poly3DCollection([p003, p004, origin], facecolor=color)
@@ -219,11 +224,30 @@ def main():
     visual.drawTriangle(p221, p121, p211, color2)
     visual.drawTriangle(p211, p111, p121, color2)
 
+    # baseVertex = p001
+    ridge = [p121, p221]
+    LValley = [p111, p211]
+    Rvalley = [p002, p112]
+
+    # project vertices of plannar array onto spherical surface
+    for i in range(2,5):
+        ridgeVertex = np.array(p121[:,2]) + i * np.array([A/S3, A])
+        ridge.append(computeZ(ridgeVertex))
+
+        LValleyVertex = np.array([-A * S3_2, 3*A/2 + i * A])
+        LValley.append(computeZ(LValleyVertex))
+
+        RValleyVertex = np.array([np.array([0, A]) + i*np.array(A * S3_2, A/2)])
+        Rvalley.append(computeZ(RValleyVertex))
+
+    for i in range(2,5):
+
+
+
     plt.show()
     
 
 
 
 if __name__ == '__main__':
-    main()    
-
+    main()
