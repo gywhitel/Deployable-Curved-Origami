@@ -172,6 +172,7 @@ class DCOF:
         return sol
 
     def circularArray(self, angle:float):
+        self.hub = rotateZ(self.hub, angle)
         self.LValley = rotateZ(self.LValley, angle)
         self.RValley = rotateZ(self.RValley, angle)
         self.ridge = rotateZ(self.ridge, angle)
@@ -243,20 +244,14 @@ class Visual:
     def __init__(self, fig:plt.figure):
         self.ax = Axes3D(fig)
     
-    # def setDCOF(self, dcof:DCOF):
-    #     self.dcof = dcof
-
     def drawSphere(self, dcof:DCOF):
         R = dcof.getRadius()
-        xgrid = np.arange(-6, 7, 0.5)
-        ygrid = np.arange(-6, 7, 0.5)
+        xgrid = np.arange(-5, 6, 0.5)
+        ygrid = np.arange(-5, 6, 0.5)
         x, y = np.meshgrid(xgrid, ygrid)
         z = -np.real(np.sqrt(R*R - x*x - y*y))
-        # x[z>=0] = np.nan
-        # y[z>=0] = np.nan
         # self.ax.plot_wireframe(x, y, z, color='lightcoral')
         self.ax.contour3D(x, y, z, 80, cmap='binary')
-        # self.ax.set_alpha(0.1)
         self.ax.set_xlabel("X (m)")
         self.ax.set_ylabel("Y (m)")
         self.ax.set_zlabel("Z (m)")
@@ -295,18 +290,19 @@ class Visual:
 
     def centroSymmetry(self, dcof:DCOF):
         if isinstance(dcof, TriangleDCOF):
-            self.rotation = 2*PI/3
+            self.rotation = -2*PI/3
         if isinstance(dcof, SquareDCOF):
-            self.rotation = PI/2
+            self.rotation = -PI/2
         if isinstance(dcof, HexagonDCOF):
-            self.rotation = PI / 3
-            dcof2 = deepcopy(dcof)
-            dcof2.circularArray(self.rotation)
-            for i in range(len(dcof2.LValley)):
-                self.drawLayer(dcof2, i+1)
+            self.rotation = -PI / 3
+            for i in range(1,6):
+                dcof2 = deepcopy(dcof)
+                dcof2.circularArray(self.rotation * i)
+                for layer in range(len(dcof2.LValley)):
+                    self.drawLayer(dcof2, layer+1)
 
         if isinstance(dcof, OctagonDCOF):
-            self.rotation = PI / 4
+            self.rotation = -PI / 4
         
         
 
@@ -330,7 +326,7 @@ def main():
     visual.drawLayer(hdcof, 3)
     hdcof.computeLayer()
     visual.drawLayer(hdcof, 4)
-    # visual.centroSymmetry(hdcof)
+    visual.centroSymmetry(hdcof)
 
     plt.show()
 

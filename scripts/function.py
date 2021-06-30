@@ -40,5 +40,5 @@ def rotateZ(points:np.array, angle:float=np.pi/3):
                         [0, 0, 1]
                         ])
     for row in range(len(points)):
-        points[row] = points[row] * rotMat.transpose()
+        points[row] = points[row] @ rotMat.transpose()
     return points
