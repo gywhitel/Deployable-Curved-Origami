@@ -1,13 +1,18 @@
+'''
+dcof (Deployable Curved Origami Flasher)
+Author: Yinghao GAO
+Email: yinghaogo@outlook.com
+'''
+
 import numpy as np
-from function import *
+
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.colors as ptColor
+
 from copy import deepcopy
-
-
-
+from function import *
 
 PI = np.pi
 INF = np.inf
