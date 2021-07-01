@@ -6,7 +6,7 @@ Affiliation: Harbin Institute of Technology, Shenzhen
 
 # Background
 
-![](figures/flasher CG.png)
+![](figures/flasher_CG.png)
 Fig 1. Possible usage of deployable origami flashers for solar array on a spacecraft [1]
 
 
