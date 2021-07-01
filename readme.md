@@ -36,7 +36,7 @@ I am using AutoDesk Invertor, so I will take it for example to demonstrate how t
 
 Users can use `DCOF.exportVertices(filename)` to export computed vertices into an excel file (`.csv`).
 
-![](figures/CAD.png)
+![](figures/CAD.jpg)
 Fig 4. Import the computed vertices into CAD softwares
 
 ![](figures/prototype.png)
