@@ -10,13 +10,10 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.colors as ptColor
-<<<<<<< HEAD:scripts/dcof.py
 
 from copy import deepcopy
 from function import *
-=======
 
->>>>>>> dev:scripts/DCOF.py
 
 PI = np.pi
 INF = np.inf
@@ -26,7 +23,7 @@ DEG = 180 / PI
 
 class DCOF:
     '''
-    The class for design of deployable curved origami flashers (DCOF)
+    The base class for design of deployable curved origami flashers (DCOF)
     '''
     # self.vertex
     def __init__(self, R:float, A:float):
@@ -35,11 +32,10 @@ class DCOF:
         The method is not only capable of designing flashers on a spherical surface, but also can be exploited for flashers on other shapes by user-specified surface equation.
         Parameters
         ---
-        param : type
-            introduction
-        Return
-        ---
-        return instruction
+        R : float
+            the radius of the spherical surface (m)
+        A : float
+            the edge length of the hub (m)
         '''
         self.__R = R
         self.__A = A
@@ -62,14 +58,14 @@ class DCOF:
 
     def computeZ(self, p:np.array)->np.array:
         '''
-        brief
+        Project a 2D vertex of plannar flashers onto the spherical surface.
         Parameters
         ---
-        param : type
-            introduction
+        p : np.array, 2 x 1 2D point
+            vertex of the plannar flasher
         Return
         ---
-        return instruction
+        return 3D point on the spherical surface
         '''
         R = self.__R
         x, y = p[0], p[1]
@@ -78,14 +74,17 @@ class DCOF:
 
     def setSearchParameter(self, step:float, limit:float, angleTolerence:float, distanceTolerence:float):
         '''
-        brief
+        set searching parameters for the 3D brutal force search algorithm
         Parameters
         ---
-        param : type
-            introduction
-        Return
-        ---
-        return instruction
+        step : float
+            the search step of the search algorithm. (m)
+        limit : float
+            The search region is a limit x limit x limit 3D space. This determines the size of the search region. (m)
+        angleTolerence : float
+            This is the slack of angular constraints. (rad)
+        distanceTolerence : float
+            This is the slack of edge length constraint. (m)
         '''
         self.step = step
         self.limit = limit
@@ -96,27 +95,6 @@ class DCOF:
         '''
         Compute a ridge vertex that satisfies both surface equation constraints and folding constraints, using numerical method.
         Do 3D brutal force search in the neighborhood of initialGuess.
-        Parameters
-        ---
-        initialGuess : np.array([x, y, z]) 3D point
-            introduction
-        lastVertex :  np.array([x, y, z]) 3D point
-            last ridge vertex (the previous vertex we solved)
-        LVVertex : np.array([x, y, z]) 3D point]
-            the vertex on the left valley
-        RVVertex : np.array([x, y, z]) 3D point
-            the vertex on the right valley
-        last_LV : np.array([x, y, z]) 3D point
-            the last vertex on the left valley
-        last_RV : np.array([x, y, z]) 3D point
-            the last vertex on the right valley
-        limit : float
-            this determines the size of searching region
-
-        Return
-        vertex : np.array([x, y, z]) 3D point
-        ---
-        the vertex on the ridge
         '''
 
         # 3D brutal force search
@@ -182,13 +160,22 @@ class DCOF:
         return sol
 
     def circularArray(self, angle:float):
+        '''
+        rotate-copy a sector of DCOF about Z-axis by angle. This is like the circular-array operation in CAD softwares.
+        Parameters
+        ---
+        angle : float
+            rotation angle (rad)
+        '''
         self.hub = rotateZ(self.hub, angle)
         self.LValley = rotateZ(self.LValley, angle)
         self.RValley = rotateZ(self.RValley, angle)
         self.ridge = rotateZ(self.ridge, angle)
     
 class TriangleDCOF(DCOF):
-    
+    '''
+    Class for design of DCOF with regular triangle hub. Inherit from DCOF base class.
+    '''
     def __init__(self, R:float, A:float):
         DCOF.__init__(self, R, A)
     
@@ -203,13 +190,9 @@ class TriangleDCOF(DCOF):
     def getHubOrigin(self):
         '''
         The origin is located at the centroid of the hub
-        Parameters
-        ---
-        param : type
-            introduction
         Return
         ---
-        return instruction
+        return the centroid of the hub.
         '''
         return (self.hub[0] + self.hub[1] + self.hub[2]) / 3
 
@@ -234,7 +217,9 @@ class TriangleDCOF(DCOF):
         print("Layer NO.", len(self.ridge), "is generated.")
 
 class SquareDCOF(DCOF):
-    
+    '''
+    Class for design of DCOF with square hub. Inherit from DCOF base class.
+    '''
     def __init__(self, R:float, A:float):
         DCOF.__init__(self, R, A)
     
@@ -271,7 +256,9 @@ class SquareDCOF(DCOF):
         print("Layer NO.", len(self.ridge), "is generated.")
 
 class HexagonDCOF(DCOF):
-    
+    '''
+    Class for design of DCOF with regular hexagon hub. Inherit from DCOF base class.
+    '''
     def __init__(self, R:float, A:float):
         DCOF.__init__(self, R, A)
 
@@ -293,14 +280,8 @@ class HexagonDCOF(DCOF):
         '''
         Compute a layer of a sector of the plannar flasher
         Parameters
-        ---
-        param : type
-            introduction
-        Return
-        ---
-        return instruction
         '''
-        A, R = self.getLength(), self.getRadius()
+        A = self.getLength()
         layer = len(self.LValley) + 1
         LValleyVertex = self.hub[0][:2] + np.array([0, A]) * layer
         LValleyVertex = self.computeZ(LValleyVertex)
@@ -324,7 +305,9 @@ class HexagonDCOF(DCOF):
 
 
 class OctagonDCOF(DCOF):
-    
+    '''
+    Class for design of DCOF with regular octagon hub. Inherit from DCOF base class.
+    '''
     def __init__(self, R:float, A:float):
         DCOF.__init__(self, R, A)
     
@@ -451,32 +434,3 @@ class Visual:
                 dcof2.circularArray(self.rotation * i)
                 for layer in range(len(dcof2.LValley)):
                     self.drawLayer(dcof2, layer+1)
-        
-        
-
-def main():
-    figure = plt.figure()
-    visual = Visual(figure)
-
-    hdcof = OctagonDCOF(10, 1)
-    hdcof.computeHub()
-    
-    visual.drawSphere(hdcof)
-    hubOrigin = hdcof.getHubOrigin()
-    visual.drawHub(hdcof, hubOrigin)
-
-    hdcof.computeLayer()    # generate first layer
-    visual.drawLayer(hdcof, 1)
-    hdcof.setSearchParameter(0.01, 0.15, 5, 0.15)
-    hdcof.computeLayer()    # generate second layer
-    visual.drawLayer(hdcof ,2)
-    hdcof.computeLayer()
-    visual.drawLayer(hdcof, 3)
-    # hdcof.computeLayer()
-    # visual.drawLayer(hdcof, 4)
-    visual.centroSymmetry(hdcof)
-
-    plt.show()
-
-if __name__ == '__main__':
-    main()
