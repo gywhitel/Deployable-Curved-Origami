@@ -1,7 +1,6 @@
-'''
-DCOF (Deployable Curved Origami Flasher)
-Author: Yinghao GAO
-'''
+# DCOF (Deployable Curved Origami Flasher)
+# Author: Yinghao GAO
+
 
 import numpy as np
 
@@ -11,6 +10,8 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.colors as ptColor
 
 from copy import deepcopy
+import csv
+
 from function import *
 
 
@@ -170,6 +171,24 @@ class DCOF:
         self.LValley = rotateZ(self.LValley, angle)
         self.RValley = rotateZ(self.RValley, angle)
         self.ridge = rotateZ(self.ridge, angle)
+
+    def exportVertices(self, filename:str='vertices'):
+        '''
+        Export computed vertices into a csv file, which can be used to import 3D points into CAD softwares.
+        Parameters
+        ---
+        filename : str
+            Specify the name of the file that all vertices will be exported into (including path).  e.g.'../data/vertices'
+        '''
+        with open(filename + '.csv', mode='w', encoding='utf-8') as file:
+            csv_writer = csv.writer(file)
+            csv_writer.writerow(self.hub[0])
+            for p in self.LValley:
+                csv_writer.writerow(p)
+            for p in self.RValley:
+                csv_writer.writerow(p)
+            for p in self.ridge:
+                csv_writer.writerow(p)
     
 class TriangleDCOF(DCOF):
     '''

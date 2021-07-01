@@ -1,3 +1,6 @@
+# DCOF (Deployable Curved Origami Flasher)
+# Author: Yinghao GAO
+
 import DCOF
 import matplotlib.pyplot as plt
 

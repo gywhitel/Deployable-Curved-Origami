@@ -1,6 +1,7 @@
+# DCOF (Deployable Curved Origami Flasher)
+# Author: Yinghao GAO
+
 import numpy as np
-
-
 
 def norm(p:np.array)->float:
     '''

@@ -1,3 +1,6 @@
+# DCOF (Deployable Curved Origami Flasher)
+# Author: Yinghao GAO
+
 import DCOF
 import matplotlib.pyplot as plt
 
@@ -22,5 +25,6 @@ if __name__ == '__main__':
     hdcof.computeLayer()
     visual.drawLayer(hdcof, 4)
     visual.centroSymmetry(hdcof)
+    # hdcof.exportVertices('vertices')
 
     plt.show()

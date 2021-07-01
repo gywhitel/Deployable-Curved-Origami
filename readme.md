@@ -2,7 +2,7 @@
 
 Author: Sen Wang, Yinghao Gao, Hailin Huang, Bing Li, Hongwei Guo, Rongqiang Liu
 
-Affiliation: Harbin Institute of Technology, Shenzhen
+Affiliation: Harbin Institute of Technology
 
 # Background
 
@@ -34,7 +34,7 @@ Four demos of design DCOF with four hubs the are given:
 # Import computed vertices into CAD software
 I am using AutoDesk Invertor, so I will take it for example to demonstrate how to import computed vertices into CAD softwares. 
 
-TODO export computed vertices into an excel file.
+Users can use `DCOF.exportVertices(filename)` to export computed vertices into an excel file (`.csv`).
 
 ![](figures/CAD.png)
 Fig 4. Import the computed vertices into CAD softwares
