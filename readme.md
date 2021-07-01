@@ -9,6 +9,7 @@ Affiliation: Harbin Institute of Technology, Shenzhen
 ![](figures/flasher_CG.png)
 Fig 1. Possible usage of deployable origami flashers for solar array on a spacecraft [1]
 
+> [1]	S. A. Zirbel and R. J. Lang, "Accommodating Thickness in Origami-Based Deployable Arrays," Journal of Mechanical Design, vol. 135, 2013.
 
 
 ![](figures/CG.png)
@@ -18,7 +19,7 @@ This paper proposes an approach to designing rigid origami flashers that can be 
 
 # Introduction to the Repo
 
-![](figures/flow.jpg)
+<img src="figures/flow.jpg" width="400" height="500">  \
 Fig 3. The flow of the design method
 
 The core algorithm is all in [`DCOF.py`](scripts/DCOF.py) (Deployable Curve Origami Flasher).
@@ -40,5 +41,3 @@ Fig 4. Import the computed vertices into CAD softwares
 
 ![](figures/prototype.png)
 Fig 5. Membrane prototype and thin-panel prototype
-
-[1]	S. A. Zirbel and R. J. Lang, "Accommodating Thickness in Origami-Based Deployable Arrays," Journal of Mechanical Design, vol. 135, 2013.
