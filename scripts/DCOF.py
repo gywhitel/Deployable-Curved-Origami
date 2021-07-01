@@ -1,7 +1,6 @@
 '''
-dcof (Deployable Curved Origami Flasher)
+DCOF (Deployable Curved Origami Flasher)
 Author: Yinghao GAO
-Email: yinghaogo@outlook.com
 '''
 
 import numpy as np
