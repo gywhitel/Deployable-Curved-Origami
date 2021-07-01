@@ -11,11 +11,19 @@ Fig 1. Possible usage of deployable origami flashers for solar array on a spacec
 
 > [1]	S. A. Zirbel and R. J. Lang, "Accommodating Thickness in Origami-Based Deployable Arrays," Journal of Mechanical Design, vol. 135, 2013.
 
+Spacecrafts are usually launched with solar array or antenna that occupy large space, which is conflict to limited space of spacecrafts.
+Deployable origami flashers take researchers' attention because they are able to be deployed with large area and to be folded compactly.
+
+This paper proposes an approach to designing rigid origami flashers that can be deployed onto curved-surface configurations. 
+The presented method enables the origami flashers to be wrapped around regular polygonal central hubs. 
+Based on the principle of parallel projection, planar origami flashers are projected onto target spherical surfaces to obtain the vertices on the boundary creases between sections of adjacent origami flashers. 
+The geometric relationships of thin-panel curved origami flashers are established in terms of foldability, and other vertices in each section are calculated using numerical methods. 
+The novel designing of deployable curved-surface rigid origami flashers facilitates their potential applicability in solid surface antennas, surface reflectors, and other space engineering applications.
 
 ![](figures/CG.png)
 Fig 2. Four computed models with different hubs 
 
-This paper proposes an approach to designing rigid origami flashers that can be deployed onto curved-surface configurations. The method of designing planar origami flashers that can be wrapped around regular polygonal central hubs is presented. Based on the principle of parallel projection, planar origami flashers are projected onto target spherical surfaces to obtain the vertices on the boundary creases between sections of adjacent origami flashers. The geometric relationships of thin-panel curved origami flashers are established in terms of foldability, and other vertices in each section are calculated using numerical methods. Flexible and elastic hinges modify the thin-panel curved origami flashers into thick-panel rigid flashers. The thick rigid panels maintain the shape of flashers, and the flexible creases treated using thickness-accommodating methodologies are used to maintain the foldability of the thick panels. Additionally, we analyzed the parameters that affect the accuracy of the surface fitting. The feasibility of the proposed approach is verified using numerical simulations and physical prototypes. The novel designing of deployable curved-surface rigid origami flashers facilitates their potential applicability in solid surface antennas, surface reflectors, and other space engineering applications.
+
 
 # Introduction to the Repo
 
