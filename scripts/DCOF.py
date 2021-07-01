@@ -10,9 +10,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.colors as ptColor
+<<<<<<< HEAD:scripts/dcof.py
 
 from copy import deepcopy
 from function import *
+=======
+
+>>>>>>> dev:scripts/DCOF.py
 
 PI = np.pi
 INF = np.inf
@@ -170,8 +174,9 @@ class DCOF:
                                 # if none of the feasible solution satisfies the fitting error tolerance, return the one with smallest fitting error
                                     sol = vertex
         if cost is INF:
-            print("Fail to find a solution")
-            return None
+            # print("Fail to find a solution, return the initial guess")
+            # return None
+            raise ValueError("Fail to find a solution. Suggest tuning searching parameters")
 
         print("Found a solution: ", sol, "Fitting error: ", cost)
         return sol
@@ -183,10 +188,87 @@ class DCOF:
         self.ridge = rotateZ(self.ridge, angle)
     
 class TriangleDCOF(DCOF):
-    pass
+    
+    def __init__(self, R:float, A:float):
+        DCOF.__init__(self, R, A)
+    
+    def computeHub(self):
+        A = self.getLength()
+        self.hub = np.array([
+            self.computeZ([0, A / S3]),
+            self.computeZ([A/2, -A/2/S3]),
+            self.computeZ([-A/2, -A/2/S3]),
+        ])
+
+    def getHubOrigin(self):
+        '''
+        The origin is located at the centroid of the hub
+        Parameters
+        ---
+        param : type
+            introduction
+        Return
+        ---
+        return instruction
+        '''
+        return (self.hub[0] + self.hub[1] + self.hub[2]) / 3
+
+    def computeLayer(self):
+        A = self.getLength()
+        layer = len(self.LValley) + 1
+
+        LValleyVertex = self.hub[0][:2] + np.array([A/2, S3 * A/2]) * layer
+        LValleyVertex = self.computeZ(LValleyVertex)
+        self.LValley.append(LValleyVertex)
+
+        RValleyVertex = self.hub[0][:2] + np.array([A/2, -S3*A/2]) * layer
+        RValleyVertex = self.computeZ(RValleyVertex)
+        self.RValley.append(RValleyVertex)
+
+        ridgeVertex = self.hub[0][:2] + np.array([2*A ,0]) * layer
+        ridgeVertex = self.computeZ(ridgeVertex)    # initial guess
+        self.ridge.append(ridgeVertex)
+        if len(self.LValley) > 1:
+            # The projected ridge vertex of the first layer yields little error, so there is no need to do search on the first layer
+            self.ridge[-1] = self.searchVertex()
+        print("Layer NO.", len(self.ridge), "is generated.")
 
 class SquareDCOF(DCOF):
-    pass
+    
+    def __init__(self, R:float, A:float):
+        DCOF.__init__(self, R, A)
+    
+    def computeHub(self):
+        A = self.getLength()
+        self.hub = np.array([
+            self.computeZ([-A/2, A/2]),
+            self.computeZ([A/2, A/2]),
+            self.computeZ([A/2, -A/2]),
+            self.computeZ([-A/2, -A/2])
+        ])
+
+    def getHubOrigin(self):
+        return (self.hub[0] + self.hub[1] + self.hub[2] + self.hub[3]) / 4
+
+    def computeLayer(self):
+        A = self.getLength()
+        layer = len(self.LValley) + 1
+
+        LValleyVertex = self.hub[0][:2] + np.array([0, A]) * layer
+        LValleyVertex = self.computeZ(LValleyVertex)
+        self.LValley.append(LValleyVertex)
+
+        RValleyVertex = self.hub[0][:2] + np.array([A, 0]) * layer
+        RValleyVertex = self.computeZ(RValleyVertex)
+        self.RValley.append(RValleyVertex)
+
+        ridgeVertex = self.hub[0][:2] + np.array([A, A]) * layer
+        ridgeVertex = self.computeZ(ridgeVertex)    # initial guess
+        self.ridge.append(ridgeVertex)
+        if len(self.LValley) > 1:
+            # The projected ridge vertex of the first layer yields little error, so there is no need to do search on the first layer
+            self.ridge[-1] = self.searchVertex()
+        print("Layer NO.", len(self.ridge), "is generated.")
 
 class HexagonDCOF(DCOF):
     
@@ -242,7 +324,50 @@ class HexagonDCOF(DCOF):
 
 
 class OctagonDCOF(DCOF):
-    pass
+    
+    def __init__(self, R:float, A:float):
+        DCOF.__init__(self, R, A)
+    
+    def computeHub(self):
+        A = self.getLength()
+        T8 = np.tan(PI/8)
+        self.hub = np.array([
+                    self.computeZ([-A/2/T8, A / 2]),
+                    self.computeZ([-A/2,  A/2/T8]),
+                    self.computeZ([A/2,  A/2/T8]),
+                    self.computeZ([A/2/T8, A / 2]),
+                    self.computeZ([A/2/T8, -A / 2]),
+                    self.computeZ([A/2,  -A/2/T8]),
+                    self.computeZ([-A/2,  -A/2/T8]),
+                    self.computeZ([-A/2/T8, -A / 2]),
+                    ])
+
+    def getHubOrigin(self):
+        return (self.hub[0] + self.hub[4]) / 2
+
+    def computeLayer(self):
+        A = self.getLength()
+        layer = len(self.LValley) + 1
+
+        LValleyVertex = self.hub[0][:2] + np.array([0, A]) * layer
+        LValleyVertex = self.computeZ(LValleyVertex)
+        self.LValley.append(LValleyVertex)
+
+        S2 = np.sqrt(2)
+        RValleyVertex = self.hub[0][:2] + np.array([A/S2, A/S2]) * layer
+        RValleyVertex = self.computeZ(RValleyVertex)
+        self.RValley.append(RValleyVertex)
+
+        T3_8 = np.tan(3*PI/8)
+        ridgeVertex = self.hub[0][:2] + np.array([A/T3_8, A]) * layer
+        ridgeVertex = self.computeZ(ridgeVertex)    # initial guess
+        self.ridge.append(ridgeVertex)
+        if len(self.LValley) > 1:
+            # The projected ridge vertex of the first layer yields little error, so there is no need to do search on the first layer
+            self.ridge[-1] = self.searchVertex()
+        print("Layer NO.", len(self.ridge), "is generated.")
+
+
 
 class Visual:
 
@@ -294,10 +419,23 @@ class Visual:
             self.drawTriangle(LV[current], LV[last], ridge[last], color)
 
     def centroSymmetry(self, dcof:DCOF):
+
         if isinstance(dcof, TriangleDCOF):
             self.rotation = -2*PI/3
+            for i in range(1,3):
+                dcof2 = deepcopy(dcof)
+                dcof2.circularArray(self.rotation * i)
+                for layer in range(len(dcof2.LValley)):
+                    self.drawLayer(dcof2, layer+1)
+
         if isinstance(dcof, SquareDCOF):
             self.rotation = -PI/2
+            for i in range(1,4):
+                dcof2 = deepcopy(dcof)
+                dcof2.circularArray(self.rotation * i)
+                for layer in range(len(dcof2.LValley)):
+                    self.drawLayer(dcof2, layer+1)
+
         if isinstance(dcof, HexagonDCOF):
             self.rotation = -PI / 3
             for i in range(1,6):
@@ -308,6 +446,11 @@ class Visual:
 
         if isinstance(dcof, OctagonDCOF):
             self.rotation = -PI / 4
+            for i in range(1,8):
+                dcof2 = deepcopy(dcof)
+                dcof2.circularArray(self.rotation * i)
+                for layer in range(len(dcof2.LValley)):
+                    self.drawLayer(dcof2, layer+1)
         
         
 
@@ -315,7 +458,7 @@ def main():
     figure = plt.figure()
     visual = Visual(figure)
 
-    hdcof = HexagonDCOF(10, 1)
+    hdcof = OctagonDCOF(10, 1)
     hdcof.computeHub()
     
     visual.drawSphere(hdcof)
@@ -329,8 +472,8 @@ def main():
     visual.drawLayer(hdcof ,2)
     hdcof.computeLayer()
     visual.drawLayer(hdcof, 3)
-    hdcof.computeLayer()
-    visual.drawLayer(hdcof, 4)
+    # hdcof.computeLayer()
+    # visual.drawLayer(hdcof, 4)
     visual.centroSymmetry(hdcof)
 
     plt.show()
