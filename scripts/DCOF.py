@@ -22,7 +22,7 @@ DEG = 180 / PI
 
 class DCOF:
     '''
-    The base class for design of deployable curved origami flashers (DCOF)
+    The base class for design of Deployable Curved-surface Origami Flashers (DCOF)
     '''
     # self.vertex
     def __init__(self, R:float, A:float):
