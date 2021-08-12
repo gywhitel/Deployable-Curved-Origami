@@ -18,6 +18,21 @@ This paper proposes an approach to designing rigid origami flashers that can be 
 ![](figures/CG.png)
 Fig 2. Four computed models with different hubs 
 
+# Citation
+If you find our work helpful, you are welcome to cite our paper:
+```
+@article{WANG2022104512,
+title = {Design of deployable curved-surface rigid origami flashers},
+journal = {Mechanism and Machine Theory},
+volume = {167},
+pages = {104512},
+year = {2022},
+issn = {0094-114X},
+doi = {https://doi.org/10.1016/j.mechmachtheory.2021.104512},
+url = {https://www.sciencedirect.com/science/article/pii/S0094114X21002664},
+author = {Sen Wang and Yinghao Gao and Hailin Huang and Bing Li and Hongwei Guo and Rongqiang Liu}
+```
+
 # Introduction to the Repo
 
 This repo serves as the attached program of  the paper. You can run the python programs that can design multiple DCOFs (Deployable Curvedf-surface Origami Flashers) and visualize them. And you also can export the computed vertices into CAD softwares so that you can fabricate prototypes from the algorithm (Fig 3).
